@@ -40,7 +40,15 @@ int main()
 			cin >> end;
 			LowcostMenu();
 			cin >> val2;
+			TG.Floyed();
+			cout << "\n\t\t\t-----------------------------\n";
+			cout << "\t\t\t已为您选择";
+			TG.PrintCity(start - 1, end - 1);
+			cout << "最佳路线\n\n\t\t\t";
+			TG.FindPath(start - 1, end - 1, val2);
+			TG.PrintInfo(start - 1, end - 1, val2);
 			system("pause");
+			system("cls");
 			break;
 		case 2:	// 管理员模式
 			cin >> val2;

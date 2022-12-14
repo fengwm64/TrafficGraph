@@ -32,6 +32,9 @@ void LowcostMenu()
 	cout << "\t\t\t*   2) 最低花费                                         *\n";
 	cout << "\t\t\t*   3) 最短时间                                         *\n";
 	cout << "\t\t\t*   4) 最少中转                                         *\n";
+	cout << "\t\t\t*   5) 综合考虑                                         *\n";
+	cout << "\t\t\t*                                                       *\n";
+	cout << "\t\t\t*   0) 返回                                             *\n";
 	cout << "\t\t\t*-------------------------------------------------------*\n";
 	cout << "\t\t\t请输入：";
 }
@@ -52,20 +55,22 @@ TrafficGraph::TrafficGraph(VertexType V[], GraphInfo GI[], int n, int e)
 {
 	VexNum = n;
 	ArcNum = e;
-
+	
 	Vex = new VertexType[VexNum];
 	Edge = new EdgeType * [VexNum];
 	Path = new EdgeType * [VexNum];
+	Dist = new EdgeType * [VexNum];
 	for (int i = 0; i < VexNum; i++)
 	{
 		Edge[i] = new EdgeType[VexNum];
 		Path[i] = new EdgeType[VexNum];
+		Dist[i] = new EdgeType[VexNum];
 	}
-
 	for (int i = 0; i < ArcNum; i++)
 	{
 		if (i < VexNum)
 			Vex[i] = V[i];
+		GI[i].Weight.len = 1;
 		Edge[GI[i].Vex1 - 1][GI[i].Vex2 - 1] = GI[i].Weight;
 		Edge[GI[i].Vex2 - 1][GI[i].Vex1 - 1] = GI[i].Weight;
 	}
@@ -75,13 +80,21 @@ TrafficGraph::~TrafficGraph()
 {
 	VexNum = 0;
 	ArcNum = 0;
-	delete[]Vex;
 	for (int i = 0; i < VexNum; i++)
+	{
 		delete[]Edge[i];
+		delete[]Dist[i];
+	}
+	delete[]Vex;
+	delete[]Dist;
 	delete[]Edge;
 	delete[]Path;
 }
 // 打印邻接矩阵（flag选择以什么为权值：0距离，1时间，2花费）
+void TrafficGraph::PrintCity(int v1, int v2)
+{
+	cout << Vex[v1] << " -> " << Vex[v2];
+}
 void TrafficGraph::PrintGraphMat(int flag)
 {
 	switch (flag)
@@ -127,24 +140,43 @@ void TrafficGraph::PrintGraphMat(int flag)
 		return;
 	}
 }
-
+void TrafficGraph::PrintInfo(int start, int end, int flag)
+{
+	switch (flag)
+	{
+	case 0:
+		return;
+	case 1:
+		cout << " 距离仅为 " << Dist[start][end].distance << " 公里" << endl;
+		break;
+	case 2:
+		cout << " 用时仅为 " << Dist[start][end].time << " 小时" << endl;
+		break;
+	case 3:
+		cout << " 花费仅为 " << Dist[start][end].cost << " 元" << endl;
+		break;
+	case 4:
+		cout << " 中转次数仅有 " << Dist[start][end].len << " 次" << endl;
+		break;
+	case 5:
+		break;
+	default:
+		return;
+	}
+}
+// floyed算法计算多源最短路径
 void TrafficGraph::Floyed()
 {
-	EdgeType** A = new EdgeType * [VexNum];
-	for (int i = 0; i < VexNum; i++)
-		A[i] = new EdgeType[VexNum];
-
 	for (int i = 0; i < VexNum; i++)
 	{
 		for (int j = 0; j < VexNum; j++)
 		{
-			A[i][j] = Edge[i][j];
+			Dist[i][j] = Edge[i][j];
 			Path[i][j].cost = -1;
 			Path[i][j].distance = -1;
 			Path[i][j].time = -1;
 		}
 	}
-
 	// 外层循环表示添加一个顶点Vi作为中转
 	for (int i = 0; i < VexNum; i++)
 	{
@@ -153,19 +185,81 @@ void TrafficGraph::Floyed()
 		{
 			for (int k = 0; k < VexNum; k++)
 			{
-				// 当A里的值已经不是最短路径时
+				// 当Dist里的值已经不是最短路径时
 				// 更新为通过中转点Vi的路径长
 				// ！！！这里体现的是迭代的思想 
-				// A里的值永远保持最优（这里和最小生成树的算法非常像）
-				if (A[j][k] > Edge[j][i] + Edge[i][k])
+				// Dist里的值永远保持最优（这里和最小生成树的算法非常像）
+				if (Dist[j][k].distance > Edge[j][i].distance + Edge[i][k].distance)
 				{
-					// 更新A[][]~
-					A[j][k] = Edge[j][i] + Edge[i][k];
+					// 更新Dist[][]~
+					Dist[j][k].distance = Edge[j][i].distance + Edge[i][k].distance;
 					// 在path里说明是通过谁中转的
-					path[j][k] = i;
+					Path[j][k].distance = i;
+				}
+				if (Dist[j][k].cost > Edge[j][i].cost + Edge[i][k].cost)
+				{
+					// 更新Dist[][]~
+					Dist[j][k].cost = Edge[j][i].cost + Edge[i][k].cost;
+					// 在path里说明是通过谁中转的
+					Path[j][k].cost = i;
+				}
+				if (Dist[j][k].time > Edge[j][i].time + Edge[i][k].time)
+				{
+					// 更新Dist[][]~
+					Dist[j][k].time = Edge[j][i].time + Edge[i][k].time;
+					// 在path里说明是通过谁中转的
+					Path[j][k].time = i;
 				}
 			}
 		}
 	}
-
+}
+// 打印输出最短路径（flag为考虑什么因素）
+void TrafficGraph::FindPath(int start, int end, int flag)
+{
+	static int destination = end;
+	//
+	static int out = -1;
+	// 中转点
+	int mid = -1;
+	switch (flag)
+	{
+	case 0:
+		return;
+	case 1:
+		mid = Path[start][end].distance;
+		break;
+	case 2:
+		mid = Path[start][end].cost;
+		break;
+	case 3:
+		mid = Path[start][end].time;
+		break;
+	case 4:
+		mid = Path[start][end].len;
+		break;
+	case 5:
+		mid = Path[start][end].composite;
+		break;
+	default:
+		cout << "\t\t\t输入错误！" << endl;
+		return;
+	}
+	if (mid == -1)
+	{
+		if (out != start)
+			cout << Vex[start] << " -> ";
+	}
+	else
+	{
+		FindPath(start, mid, flag);
+		FindPath(mid, end, flag);
+	}
+	if (out != end)
+	{
+		cout << Vex[end];
+		if (destination != end)
+			cout << " -> ";
+		out = end;
+	}
 }
