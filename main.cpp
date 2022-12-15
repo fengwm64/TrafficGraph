@@ -4,8 +4,9 @@ using namespace std;
 
 int main()
 {
-	// 
+	// val~为菜单选项
 	int val1 = 1, val2 = 1, val3 = 1;
+	// 起点终点城市编号
 	int start = -1, end = -1;
 	// 建立交通图
 	int arc = 10, vex = 7;
@@ -22,6 +23,7 @@ int main()
 		{3,6,{1579,5,495}} };
 	VertexType V[7] = { "北京","西安","郑州","徐州","成都","广州","上海" };
 	TrafficGraph TG(V, Traffic, vex, arc);
+	TG.Floyed();
 	while (val1)
 	{
 		ShowGraph();
@@ -33,6 +35,7 @@ int main()
 			cout << "\n\t\t\t\t\t程序退出，欢迎下次使用！\n";
 			break;
 		case 1:	// 交通查询
+			flag:
 			cout << "\n\t\t\t--------------------\n";
 			cout << "\t\t\t请输入您的始发地编号：";
 			cin >> start;
@@ -40,7 +43,9 @@ int main()
 			cin >> end;
 			LowcostMenu();
 			cin >> val2;
-			TG.Floyed();
+			// val2==0返回
+			if (!val2)
+				goto flag;
 			cout << "\n\t\t\t-----------------------------\n";
 			cout << "\t\t\t已为您选择";
 			TG.PrintCity(start - 1, end - 1);
@@ -51,18 +56,40 @@ int main()
 			system("cls");
 			break;
 		case 2:	// 管理员模式
+			system("cls");
+			AdminMenu();
 			cin >> val2;
 			switch (val2)
 			{
-			default:
-				TG.PrintGraphMat(2);
+			case 1:
+				cout << "\n\t\t\t1距离，2时间，3花费，4中转" << endl;
+				cout << "\t\t\t请选择打印的权值：";
+				cin >> val3;
+				TG.PrintGraphMat(val3);
+				TG.PrintPathMat(val3);
+				TG.PrintDistMat(val3);
+				system("pause");
+				system("cls");
 				break;
+			case 2:
+				
+				system("pause");
+				system("cls");
+				break;
+			case 3:
+				system("pause");
+				system("cls");
+				break;
+			default:
+			case 0:
+				system("cls");
+				continue;
 			}
 			break;
 		default:
 			break;
 		}
 	}
-	
+
 	return 0;
 }

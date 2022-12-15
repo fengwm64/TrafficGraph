@@ -128,12 +128,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="sqqueue.cpp" />
     <ClCompile Include="TrafficGraph.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="sqqueue.h" />
-    <ClInclude Include="StatusCode.h" />
     <ClInclude Include="TrafficGraph.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
