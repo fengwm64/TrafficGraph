@@ -1,9 +1,11 @@
+// main.cpp
 #include <iostream>
 #include "TrafficGraph.h"
 using namespace std;
 
 int main()
 {
+	EdgeType e;
 	// val~为菜单选项
 	int val1 = 1, val2 = 1, val3 = 1;
 	// 起点终点城市编号
@@ -35,27 +37,35 @@ int main()
 			cout << "\n\t\t\t\t\t程序退出，欢迎下次使用！\n";
 			break;
 		case 1:	// 交通查询
-			flag:
+			query:
 			cout << "\n\t\t\t--------------------\n";
 			cout << "\t\t\t请输入您的始发地编号：";
 			cin >> start;
 			cout << "\t\t\t请输入您的目的地编号：";
 			cin >> end;
+			// 检查输入
+			if (start == end || start < 0 || start>7 || end < 0 || end>7)
+			{
+				cout << "\t\t\t输入错误！！！" << endl;
+				goto query;
+			}
 			LowcostMenu();
 			cin >> val2;
 			// val2==0返回
 			if (!val2)
-				goto flag;
+				goto query;
 			cout << "\n\t\t\t-----------------------------\n";
 			cout << "\t\t\t已为您选择";
 			TG.PrintCity(start - 1, end - 1);
 			cout << "最佳路线\n\n\t\t\t";
+			TG.InitFind(end - 1);
 			TG.FindPath(start - 1, end - 1, val2);
 			TG.PrintInfo(start - 1, end - 1, val2);
 			system("pause");
 			system("cls");
 			break;
 		case 2:	// 管理员模式
+			admin:
 			system("cls");
 			AdminMenu();
 			cin >> val2;
@@ -71,19 +81,40 @@ int main()
 				system("pause");
 				system("cls");
 				break;
+			// 修改边
 			case 2:
-				
+				int temp;
+				cout << "\n\t\t\t修改模式：\n" << endl;
+				cout << "\t\t\t请输入起点：";
+				cin >> start;
+				cout << "\t\t\t请输入终点：";
+				cin >> end;
+				cout << "\n\t\t\t1距离，2时间，3花费，4中转\n";
+				cout << "\t\t\t您要修改什么：";
+				cin >> val3;
+				cout << "\t\t\t修改为：";
+				cin >> temp;
+				TG.EidtEdge(start, end, val3, temp);
 				system("pause");
 				system("cls");
 				break;
 			case 3:
+				cout << "\n\t\t\t添加模式：\n" << endl;
+				cout << "\t\t\t请输入起点：";
+				cin >> start;
+				cout << "\t\t\t请输入终点：";
+				cin >> end;
+				cout << "\t\t\t请输入距离，时间，花费：";
+				cin >> e.distance >> e.time >> e.cost;
+				TG.AddEdge(start, end, e);
 				system("pause");
 				system("cls");
 				break;
-			default:
 			case 0:
 				system("cls");
-				continue;
+				break;
+			default:
+				goto admin;
 			}
 			break;
 		default:

@@ -1,3 +1,4 @@
+// TrafficGraph.cpp
 #include "TrafficGraph.h"
 #include <iostream>
 using namespace std;
@@ -10,15 +11,15 @@ TrafficGraph::TrafficGraph(VertexType V[], GraphInfo GI[], int n, int e)
 	VexNum = n;
 	ArcNum = e;
 	// 动态数组初始化
-	Vex = new VertexType[VexNum - 1];
-	Edge = new EdgeType * [VexNum - 1];
-	Path = new EdgeType * [VexNum - 1];
-	Dist = new EdgeType * [VexNum - 1];
+	Vex = new VertexType[VexNum];
+	Edge = new EdgeType * [VexNum];
+	Path = new EdgeType * [VexNum];
+	Dist = new EdgeType * [VexNum];
 	for (int i = 0; i < VexNum; i++)
 	{
-		Edge[i] = new EdgeType[VexNum - 1];
-		Path[i] = new EdgeType[VexNum - 1];
-		Dist[i] = new EdgeType[VexNum - 1];
+		Edge[i] = new EdgeType[VexNum];
+		Path[i] = new EdgeType[VexNum];
+		Dist[i] = new EdgeType[VexNum];
 	}
 	// 复制输入的边信息
 	for (int i = 0; i < ArcNum; i++)
@@ -65,19 +66,9 @@ void TrafficGraph::EidtEdge(int start, int end, int flag, int weight)
 	}
 }
 // 增加新边
-void TrafficGraph::AddEdge(int start, int end, VertexType V, EdgeType e)
+void TrafficGraph::AddEdge(int start, int end, EdgeType e)
 {
-	VertexType** p = new VertexType*[VexNum];
-	EdgeType** q = new EdgeType*[VexNum++];
-	for (int i = 0; i < VexNum; i++)
-	{
-		for (int j = 0; j < VexNum; j++)
-		{
-			p[i][j] = Vex[i][j];
-			q[i][j] = Edge[i][j];
-		}
-	}
-	
+	Edge[start][end] = e;
 }
 // 打印起点终点城市
 void TrafficGraph::PrintCity(int v1, int v2)
@@ -361,13 +352,20 @@ void TrafficGraph::Floyed()
 		}
 	}
 }
+
+// 记录程序一开始的终点（方便输出）
+int destination = -1;
+// 记录上一次输出的节点编号，防止重复输出
+int out = -1;
+// 初始化查找路径
+void TrafficGraph::InitFind(int end)
+{
+	destination = end;
+	out = -1;
+}
 // 打印输出最短路径（flag为考虑什么因素）
 void TrafficGraph::FindPath(int start, int end, int flag)
 {
-	// 记录程序一开始的终点（方便输出）
-	static int destination = end;
-	// 记录上一次输出的节点编号，防止重复输出
-	static int out = -1;
 	// 中转点
 	int mid = -1;
 	switch (flag)

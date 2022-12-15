@@ -1,3 +1,4 @@
+// TrafficGraph.h
 #pragma once
 #include <string>
 using namespace std;
@@ -37,6 +38,7 @@ public:
 	void PrintInfo(int start, int end, int flag);			// 打印带权路径和
 	void PrintCity(int v1, int v2);							// 打印起点终点城市
 	void Floyed();													// Floyed算法计算多源最短路径 
+	void InitFind(int end);										// 初始化查找路径
 	void FindPath(int start, int end, int flag);		// 打印输出最短路径
 	//void Min_Max(GraphInfo GI[]);
 
