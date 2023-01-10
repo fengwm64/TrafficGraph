@@ -20,7 +20,8 @@
 首先分析题目的要求，题干给定的是一幅交通图，图的基本存储结构有邻接矩阵法或者邻接表法。本题选用邻接矩阵法存储交通图，我设计了一个图类TrafficGraph，包含顶点信息数组VertexType Vex[]（存储城市名）、邻接矩阵EdgeType Edge[][]、顶点数int VexNum、边数int ArcNum，以及EdgeType Dist[][]矩阵、int Path[][]矩阵。   
 
 其次题干中所给的图中每一条边拥有距离distance、耗时time、花费cost、边长len三种信息，我设计了一个结构体EdgeType存储边的信息，并且为了实现最少中转次数的计算添加了一个数据成员边长len.  
-​
+​  
+
 再者，为了方便构造邻接矩阵，我设计一个结构体GraphInfo来输入图的每一条边，GraphInfo包含了起点Vex1、终点Vex2以及边权值EdgeType Weight。初始化一个GraphInfo类型的数组放入每一条边及其信息，然后图类的构造函数会构造出图的邻接矩阵。
 
 ## 四、主程序的流程图和主要功能模块流程图
