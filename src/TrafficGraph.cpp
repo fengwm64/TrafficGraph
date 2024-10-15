@@ -1,27 +1,27 @@
-// TrafficGraph.cpp
+ï»¿// TrafficGraph.cpp
 #include "TrafficGraph.h"
 #include <iostream>
 using namespace std;
 
-///////////////////////////////////Í¼²Ù×÷///////////////////////////////////
-// ½»Í¨Í¼¹¹Ôìº¯Êı
+///////////////////////////////////å›¾æ“ä½œ///////////////////////////////////
+// äº¤é€šå›¾æ„é€ å‡½æ•°
 TrafficGraph::TrafficGraph(VertexType V[], GraphInfo GI[], int n, int e)
 {
-	// µãÊı¡¢±ßÊı
+	// ç‚¹æ•°ã€è¾¹æ•°
 	VexNum = n;
 	ArcNum = e;
-	// ¶¯Ì¬Êı×é³õÊ¼»¯
+	// åŠ¨æ€æ•°ç»„åˆå§‹åŒ–
 	Vex = new VertexType[VexNum];
-	Edge = new EdgeType * [VexNum];
-	Path = new EdgeType * [VexNum];
-	Dist = new EdgeType * [VexNum];
+	Edge = new EdgeType *[VexNum];
+	Path = new EdgeType *[VexNum];
+	Dist = new EdgeType *[VexNum];
 	for (int i = 0; i < VexNum; i++)
 	{
 		Edge[i] = new EdgeType[VexNum];
 		Path[i] = new EdgeType[VexNum];
 		Dist[i] = new EdgeType[VexNum];
 	}
-	// ¸´ÖÆÊäÈëµÄ±ßĞÅÏ¢
+	// å¤åˆ¶è¾“å…¥çš„è¾¹ä¿¡æ¯
 	for (int i = 0; i < ArcNum; i++)
 	{
 		if (i < VexNum)
@@ -31,22 +31,22 @@ TrafficGraph::TrafficGraph(VertexType V[], GraphInfo GI[], int n, int e)
 		Edge[GI[i].Vex2 - 1][GI[i].Vex1 - 1] = GI[i].Weight;
 	}
 }
-// ½»Í¨Í¼Îö¹¹º¯Êı
+// äº¤é€šå›¾ææ„å‡½æ•°
 TrafficGraph::~TrafficGraph()
 {
 	VexNum = 0;
 	ArcNum = 0;
 	for (int i = 0; i < VexNum; i++)
 	{
-		delete[]Edge[i];
-		delete[]Dist[i];
+		delete[] Edge[i];
+		delete[] Dist[i];
 	}
-	delete[]Vex;
-	delete[]Dist;
-	delete[]Edge;
-	delete[]Path;
+	delete[] Vex;
+	delete[] Dist;
+	delete[] Edge;
+	delete[] Path;
 }
-// ±à¼­ÏÖÓĞ±ß
+// ç¼–è¾‘ç°æœ‰è¾¹
 void TrafficGraph::EidtEdge(int start, int end, int flag, int weight)
 {
 	switch (flag)
@@ -65,17 +65,17 @@ void TrafficGraph::EidtEdge(int start, int end, int flag, int weight)
 		return;
 	}
 }
-// Ôö¼ÓĞÂ±ß
+// å¢åŠ æ–°è¾¹
 void TrafficGraph::AddEdge(int start, int end, EdgeType e)
 {
 	Edge[start][end] = e;
 }
-// ´òÓ¡ÆğµãÖÕµã³ÇÊĞ
+// æ‰“å°èµ·ç‚¹ç»ˆç‚¹åŸå¸‚
 void TrafficGraph::PrintCity(int v1, int v2)
 {
 	cout << Vex[v1] << " -> " << Vex[v2];
 }
-// ´òÓ¡ÁÚ½Ó¾ØÕó£¨flagÑ¡ÔñÒÔÊ²Ã´ÎªÈ¨Öµ£º1¾àÀë£¬2Ê±¼ä£¬3»¨·Ñ£¬4ÖĞ×ª£©
+// æ‰“å°é‚»æ¥çŸ©é˜µï¼ˆflagé€‰æ‹©ä»¥ä»€ä¹ˆä¸ºæƒå€¼ï¼š1è·ç¦»ï¼Œ2æ—¶é—´ï¼Œ3èŠ±è´¹ï¼Œ4ä¸­è½¬ï¼‰
 void TrafficGraph::PrintGraphMat(int flag)
 {
 	cout << "\n\t\t\tGraphMat" << endl;
@@ -89,7 +89,7 @@ void TrafficGraph::PrintGraphMat(int flag)
 			for (int k = 0; k < VexNum; k++)
 			{
 				if (Edge[i][k].distance == INFINITY)
-					cout << "¡Ş\t";
+					cout << "âˆ\t";
 				else
 					cout << Edge[i][k].distance << "\t";
 			}
@@ -104,7 +104,7 @@ void TrafficGraph::PrintGraphMat(int flag)
 			for (int k = 0; k < VexNum; k++)
 			{
 				if (Edge[i][k].time == INFINITY)
-					cout << "¡Ş\t";
+					cout << "âˆ\t";
 				else
 					cout << Edge[i][k].time << "\t";
 			}
@@ -119,7 +119,7 @@ void TrafficGraph::PrintGraphMat(int flag)
 			for (int k = 0; k < VexNum; k++)
 			{
 				if (Edge[i][k].cost == INFINITY)
-					cout << "¡Ş\t";
+					cout << "âˆ\t";
 				else
 					cout << Edge[i][k].cost << "\t";
 			}
@@ -127,14 +127,14 @@ void TrafficGraph::PrintGraphMat(int flag)
 		}
 		return;
 	case 4:
-		cout << "\t\t\t×îÉÙÖĞ×ª" << endl;
+		cout << "\t\t\tæœ€å°‘ä¸­è½¬" << endl;
 		for (int i = 0; i < VexNum; i++)
 		{
 			cout << "\t\t\t";
 			for (int k = 0; k < VexNum; k++)
 			{
 				if (Edge[i][k].len == INFINITY)
-					cout << "¡Ş\t";
+					cout << "âˆ\t";
 				else
 					cout << Edge[i][k].len << "\t";
 			}
@@ -143,7 +143,7 @@ void TrafficGraph::PrintGraphMat(int flag)
 		return;
 	}
 }
-// ´òÓ¡Dist¾ØÕó£¨flagÑ¡ÔñÒÔÊ²Ã´ÎªÈ¨Öµ£º1¾àÀë£¬2Ê±¼ä£¬3»¨·Ñ£¬4ÖĞ×ª£©
+// æ‰“å°DistçŸ©é˜µï¼ˆflagé€‰æ‹©ä»¥ä»€ä¹ˆä¸ºæƒå€¼ï¼š1è·ç¦»ï¼Œ2æ—¶é—´ï¼Œ3èŠ±è´¹ï¼Œ4ä¸­è½¬ï¼‰
 void TrafficGraph::PrintDistMat(int flag)
 {
 	cout << "\n\t\t\tDistMat" << endl;
@@ -157,7 +157,7 @@ void TrafficGraph::PrintDistMat(int flag)
 			for (int k = 0; k < VexNum; k++)
 			{
 				if (Dist[i][k].distance == INFINITY)
-					cout << "¡Ş\t";
+					cout << "âˆ\t";
 				else
 					cout << Dist[i][k].distance << "\t";
 			}
@@ -172,7 +172,7 @@ void TrafficGraph::PrintDistMat(int flag)
 			for (int k = 0; k < VexNum; k++)
 			{
 				if (Dist[i][k].time == INFINITY)
-					cout << "¡Ş\t";
+					cout << "âˆ\t";
 				else
 					cout << Dist[i][k].time << "\t";
 			}
@@ -187,7 +187,7 @@ void TrafficGraph::PrintDistMat(int flag)
 			for (int k = 0; k < VexNum; k++)
 			{
 				if (Dist[i][k].cost == INFINITY)
-					cout << "¡Ş\t";
+					cout << "âˆ\t";
 				else
 					cout << Dist[i][k].cost << "\t";
 			}
@@ -195,14 +195,14 @@ void TrafficGraph::PrintDistMat(int flag)
 		}
 		return;
 	case 4:
-		cout << "\t\t\t×îÉÙÖĞ×ª" << endl;
+		cout << "\t\t\tæœ€å°‘ä¸­è½¬" << endl;
 		for (int i = 0; i < VexNum; i++)
 		{
 			cout << "\t\t\t";
 			for (int k = 0; k < VexNum; k++)
 			{
 				if (Dist[i][k].len == INFINITY)
-					cout << "¡Ş\t";
+					cout << "âˆ\t";
 				else
 					cout << Dist[i][k].len << "\t";
 			}
@@ -211,7 +211,7 @@ void TrafficGraph::PrintDistMat(int flag)
 		return;
 	}
 }
-// ´òÓ¡Path¾ØÕó£¨flagÑ¡ÔñÒÔÊ²Ã´ÎªÈ¨Öµ£º1¾àÀë£¬2Ê±¼ä£¬3»¨·Ñ£¬4ÖĞ×ª£©
+// æ‰“å°PathçŸ©é˜µï¼ˆflagé€‰æ‹©ä»¥ä»€ä¹ˆä¸ºæƒå€¼ï¼š1è·ç¦»ï¼Œ2æ—¶é—´ï¼Œ3èŠ±è´¹ï¼Œ4ä¸­è½¬ï¼‰
 void TrafficGraph::PrintPathMat(int flag)
 {
 	cout << "\n\t\t\tPathMat" << endl;
@@ -225,7 +225,7 @@ void TrafficGraph::PrintPathMat(int flag)
 			for (int k = 0; k < VexNum; k++)
 			{
 				if (Path[i][k].distance == INFINITY)
-					cout << "¡Ş\t";
+					cout << "âˆ\t";
 				else
 					cout << Path[i][k].distance << "\t";
 			}
@@ -240,7 +240,7 @@ void TrafficGraph::PrintPathMat(int flag)
 			for (int k = 0; k < VexNum; k++)
 			{
 				if (Path[i][k].time == INFINITY)
-					cout << "¡Ş\t";
+					cout << "âˆ\t";
 				else
 					cout << Path[i][k].time << "\t";
 			}
@@ -255,7 +255,7 @@ void TrafficGraph::PrintPathMat(int flag)
 			for (int k = 0; k < VexNum; k++)
 			{
 				if (Path[i][k].cost == INFINITY)
-					cout << "¡Ş\t";
+					cout << "âˆ\t";
 				else
 					cout << Path[i][k].cost << "\t";
 			}
@@ -263,14 +263,14 @@ void TrafficGraph::PrintPathMat(int flag)
 		}
 		return;
 	case 4:
-		cout << "\t\t\t×îÉÙÖĞ×ª" << endl;
+		cout << "\t\t\tæœ€å°‘ä¸­è½¬" << endl;
 		for (int i = 0; i < VexNum; i++)
 		{
 			cout << "\t\t\t";
 			for (int k = 0; k < VexNum; k++)
 			{
 				if (Path[i][k].len == INFINITY)
-					cout << "¡Ş\t";
+					cout << "âˆ\t";
 				else
 					cout << Path[i][k].len << "\t";
 			}
@@ -279,28 +279,28 @@ void TrafficGraph::PrintPathMat(int flag)
 		return;
 	}
 }
-// ´òÓ¡´øÈ¨Â·¾¶ºÍ
+// æ‰“å°å¸¦æƒè·¯å¾„å’Œ
 void TrafficGraph::PrintInfo(int start, int end, int flag)
 {
 	switch (flag)
 	{
 	case 1:
-		cout << " ¾àÀë½öÎª " << Dist[start][end].distance << " ¹«Àï" << endl;
+		cout << " è·ç¦»ä»…ä¸º " << Dist[start][end].distance << " å…¬é‡Œ" << endl;
 		break;
 	case 2:
-		cout << " »¨·Ñ½öÎª " << Dist[start][end].cost << " Ôª" << endl;
+		cout << " èŠ±è´¹ä»…ä¸º " << Dist[start][end].cost << " å…ƒ" << endl;
 		break;
 	case 3:
-		cout << " ÓÃÊ±½öÎª " << Dist[start][end].time << " Ğ¡Ê±" << endl;
+		cout << " ç”¨æ—¶ä»…ä¸º " << Dist[start][end].time << " å°æ—¶" << endl;
 		break;
 	case 4:
-		cout << " ÖĞ×ª´ÎÊı½öÓĞ " << Dist[start][end].len - 1 << " ´Î" << endl;
+		cout << " ä¸­è½¬æ¬¡æ•°ä»…æœ‰ " << Dist[start][end].len - 1 << " æ¬¡" << endl;
 		break;
 	default:
 		return;
 	}
 }
-// floyedËã·¨¼ÆËã¶àÔ´×î¶ÌÂ·¾¶
+// floyedç®—æ³•è®¡ç®—å¤šæºæœ€çŸ­è·¯å¾„
 void TrafficGraph::Floyed()
 {
 	for (int i = 0; i < VexNum; i++)
@@ -314,23 +314,23 @@ void TrafficGraph::Floyed()
 			Path[i][j].len = -1;
 		}
 	}
-	// Íâ²ãÑ­»·±íÊ¾Ìí¼ÓÒ»¸ö¶¥µãVi×÷ÎªÖĞ×ª
+	// å¤–å±‚å¾ªç¯è¡¨ç¤ºæ·»åŠ ä¸€ä¸ªé¡¶ç‚¹Viä½œä¸ºä¸­è½¬
 	for (int i = 0; i < VexNum; i++)
 	{
-		// ÄÚ²ãË«Ñ­»·ÓÃÀ´±éÀúÕû¸ö¾ØÕó
+		// å†…å±‚åŒå¾ªç¯ç”¨æ¥éå†æ•´ä¸ªçŸ©é˜µ
 		for (int j = 0; j < VexNum; j++)
 		{
 			for (int k = 0; k < VexNum; k++)
 			{
-				// µ±DistÀïµÄÖµÒÑ¾­²»ÊÇ×î¶ÌÂ·¾¶Ê±
-				// ¸üĞÂÎªÍ¨¹ıÖĞ×ªµãViµÄÂ·¾¶³¤
-				// £¡£¡£¡ÕâÀïÌåÏÖµÄÊÇµü´úµÄË¼Ïë 
-				// DistÀïµÄÖµÓÀÔ¶±£³Ö×îÓÅ£¨ÕâÀïºÍ×îĞ¡Éú³ÉÊ÷µÄËã·¨·Ç³£Ïñ£©
+				// å½“Disté‡Œçš„å€¼å·²ç»ä¸æ˜¯æœ€çŸ­è·¯å¾„æ—¶
+				// æ›´æ–°ä¸ºé€šè¿‡ä¸­è½¬ç‚¹Viçš„è·¯å¾„é•¿
+				// ï¼ï¼ï¼è¿™é‡Œä½“ç°çš„æ˜¯è¿­ä»£çš„æ€æƒ³
+				// Disté‡Œçš„å€¼æ°¸è¿œä¿æŒæœ€ä¼˜ï¼ˆè¿™é‡Œå’Œæœ€å°ç”Ÿæˆæ ‘çš„ç®—æ³•éå¸¸åƒï¼‰
 				if (Dist[j][k].distance > Dist[j][i].distance + Dist[i][k].distance)
 				{
-					// ¸üĞÂDist[][]~
+					// æ›´æ–°Dist[][]~
 					Dist[j][k].distance = Dist[j][i].distance + Dist[i][k].distance;
-					// ÔÚpathÀïËµÃ÷ÊÇÍ¨¹ıË­ÖĞ×ªµÄ
+					// åœ¨pathé‡Œè¯´æ˜æ˜¯é€šè¿‡è°ä¸­è½¬çš„
 					Path[j][k].distance = i;
 				}
 				if (Dist[j][k].cost > Dist[j][i].cost + Dist[i][k].cost)
@@ -353,20 +353,20 @@ void TrafficGraph::Floyed()
 	}
 }
 
-// ¼ÇÂ¼³ÌĞòÒ»¿ªÊ¼µÄÖÕµã£¨·½±ãÊä³ö£©
+// è®°å½•ç¨‹åºä¸€å¼€å§‹çš„ç»ˆç‚¹ï¼ˆæ–¹ä¾¿è¾“å‡ºï¼‰
 int destination = -1;
-// ¼ÇÂ¼ÉÏÒ»´ÎÊä³öµÄ½Úµã±àºÅ£¬·ÀÖ¹ÖØ¸´Êä³ö
+// è®°å½•ä¸Šä¸€æ¬¡è¾“å‡ºçš„èŠ‚ç‚¹ç¼–å·ï¼Œé˜²æ­¢é‡å¤è¾“å‡º
 int out = -1;
-// ³õÊ¼»¯²éÕÒÂ·¾¶
+// åˆå§‹åŒ–æŸ¥æ‰¾è·¯å¾„
 void TrafficGraph::InitFind(int end)
 {
 	destination = end;
 	out = -1;
 }
-// ´òÓ¡Êä³ö×î¶ÌÂ·¾¶£¨flagÎª¿¼ÂÇÊ²Ã´ÒòËØ£©
+// æ‰“å°è¾“å‡ºæœ€çŸ­è·¯å¾„ï¼ˆflagä¸ºè€ƒè™‘ä»€ä¹ˆå› ç´ ï¼‰
 void TrafficGraph::FindPath(int start, int end, int flag)
 {
-	// ÖĞ×ªµã
+	// ä¸­è½¬ç‚¹
 	int mid = -1;
 	switch (flag)
 	{
@@ -384,97 +384,97 @@ void TrafficGraph::FindPath(int start, int end, int flag)
 		mid = Path[start][end].len;
 		break;
 	default:
-		cout << "\t\t\tÊäÈë´íÎó£¡" << endl;
+		cout << "\t\t\tè¾“å…¥é”™è¯¯ï¼" << endl;
 		return;
 	}
-	// Èç¹ûÆğµãÖÕµãÃ»ÓĞÖĞ¼äµãÁË£¬¾ÍÊä³öÆğµã
+	// å¦‚æœèµ·ç‚¹ç»ˆç‚¹æ²¡æœ‰ä¸­é—´ç‚¹äº†ï¼Œå°±è¾“å‡ºèµ·ç‚¹
 	if (mid == -1)
 	{
-		// Òª¿´¿´ÆğµãÊÇ²»ÊÇÒÑ¾­Êä³öÁË£¬ÊÇ¾Í²»ÓÃÊä³ö
+		// è¦çœ‹çœ‹èµ·ç‚¹æ˜¯ä¸æ˜¯å·²ç»è¾“å‡ºäº†ï¼Œæ˜¯å°±ä¸ç”¨è¾“å‡º
 		if (out != start)
 			cout << Vex[start] << " -> ";
 	}
-	// »¹ÓĞÖĞ¼äµã¾Íµİ¹é
+	// è¿˜æœ‰ä¸­é—´ç‚¹å°±é€’å½’
 	else
 	{
 		FindPath(start, mid, flag);
 		FindPath(mid, end, flag);
 	}
-	// Òª¿´¿´ÖÕµãÊÇ²»ÊÇÒÑ¾­Êä³öÁË£¬ÊÇ¾Í²»ÓÃÊä³ö
+	// è¦çœ‹çœ‹ç»ˆç‚¹æ˜¯ä¸æ˜¯å·²ç»è¾“å‡ºäº†ï¼Œæ˜¯å°±ä¸ç”¨è¾“å‡º
 	if (out != end)
 	{
 		cout << Vex[end];
-		// µ±Ã»ÓĞµ½´ïÕæÕıÖÕµãÊ±´òÓ¡->
+		// å½“æ²¡æœ‰åˆ°è¾¾çœŸæ­£ç»ˆç‚¹æ—¶æ‰“å°->
 		if (destination != end)
 			cout << " -> ";
 		out = end;
 	}
 }
 
-///////////////////////////////////ÏÔÊ¾²Ëµ¥///////////////////////////////////
-// ÏÔÊ¾½»Í¨Í¼²Ëµ¥
+///////////////////////////////////æ˜¾ç¤ºèœå•///////////////////////////////////
+// æ˜¾ç¤ºäº¤é€šå›¾èœå•
 void ShowGraph()
 {
 	cout << "\t\t\t*********************************************************" << endl;
-	cout << "\t\t\t*\t\t  »¶Ó­Ê¹ÓÃ½»Í¨²éÑ¯ÏµÍ³!                 *" << endl;
+	cout << "\t\t\t*\t\t  æ¬¢è¿ä½¿ç”¨äº¤é€šæŸ¥è¯¢ç³»ç»Ÿ!                 *" << endl;
 	cout << "\t\t\t*                                                       *\n";
-	cout << "\t\t\t*\t\t\t±±¾©(1)                         *" << endl;
-	cout << "\t\t\t*                                                       *\n";
-	cout << "\t\t\t*                                                       *\n";
-	cout << "\t\t\t*\tÎ÷°²(2)\t\t\t\tĞìÖİ(4)         *" << endl;
+	cout << "\t\t\t*\t\t\tåŒ—äº¬(1)                         *" << endl;
 	cout << "\t\t\t*                                                       *\n";
 	cout << "\t\t\t*                                                       *\n";
-	cout << "\t\t\t*\t\t\tÖ£Öİ(3)                         *" << endl;
+	cout << "\t\t\t*\tè¥¿å®‰(2)\t\t\t\tå¾å·(4)         *" << endl;
 	cout << "\t\t\t*                                                       *\n";
 	cout << "\t\t\t*                                                       *\n";
-	cout << "\t\t\t*\t³É¶¼(5)\t\t\t\tÉÏº£(7)         *" << endl;
+	cout << "\t\t\t*\t\t\téƒ‘å·(3)                         *" << endl;
 	cout << "\t\t\t*                                                       *\n";
 	cout << "\t\t\t*                                                       *\n";
-	cout << "\t\t\t*\t\t\t¹ãÖİ(6)                         *" << endl;
+	cout << "\t\t\t*\tæˆéƒ½(5)\t\t\t\tä¸Šæµ·(7)         *" << endl;
+	cout << "\t\t\t*                                                       *\n";
+	cout << "\t\t\t*                                                       *\n";
+	cout << "\t\t\t*\t\t\tå¹¿å·(6)                         *" << endl;
 	cout << "\t\t\t*********************************************************" << endl;
 }
-// ÏÔÊ¾Ñ¡ÔñÈ¨ÖØ²Ëµ¥
+// æ˜¾ç¤ºé€‰æ‹©æƒé‡èœå•
 void LowcostMenu()
 {
 	cout << endl;
-	cout << "\t\t\t*---------------------Äú×î¹ØĞÄµÄÊÇ----------------------*\n";
-	cout << "\t\t\t*   1) ×î¶ÌÀï³Ì                                         *\n";
-	cout << "\t\t\t*   2) ×îµÍ»¨·Ñ                                         *\n";
-	cout << "\t\t\t*   3) ×î¶ÌÊ±¼ä                                         *\n";
-	cout << "\t\t\t*   4) ×îÉÙÖĞ×ª                                         *\n";
-	//cout << "\t\t\t*   5) ×ÛºÏ¿¼ÂÇ                                         *\n";
+	cout << "\t\t\t*---------------------æ‚¨æœ€å…³å¿ƒçš„æ˜¯----------------------*\n";
+	cout << "\t\t\t*   1) æœ€çŸ­é‡Œç¨‹                                         *\n";
+	cout << "\t\t\t*   2) æœ€ä½èŠ±è´¹                                         *\n";
+	cout << "\t\t\t*   3) æœ€çŸ­æ—¶é—´                                         *\n";
+	cout << "\t\t\t*   4) æœ€å°‘ä¸­è½¬                                         *\n";
+	// cout << "\t\t\t*   5) ç»¼åˆè€ƒè™‘                                         *\n";
 	cout << "\t\t\t*                                                       *\n";
-	cout << "\t\t\t*   0) ·µ»Ø                                             *\n";
+	cout << "\t\t\t*   0) è¿”å›                                             *\n";
 	cout << "\t\t\t*-------------------------------------------------------*\n";
-	cout << "\t\t\tÇëÊäÈë£º";
+	cout << "\t\t\tè¯·è¾“å…¥ï¼š";
 }
-// Ö÷²Ëµ¥
+// ä¸»èœå•
 void MainMenu()
 {
 	cout << endl;
-	cout << "\t\t\t*------------------------Ö÷²Ëµ¥-------------------------*\n";
-	cout << "\t\t\t*   1) ½»Í¨²éÑ¯                                         *\n";
-	cout << "\t\t\t*   2) ¹ÜÀíÔ±Ä£Ê½                                       *\n";
-	cout << "\t\t\t*   0) ÍË³ö                                             *\n";
+	cout << "\t\t\t*------------------------ä¸»èœå•-------------------------*\n";
+	cout << "\t\t\t*   1) äº¤é€šæŸ¥è¯¢                                         *\n";
+	cout << "\t\t\t*   2) ç®¡ç†å‘˜æ¨¡å¼                                       *\n";
+	cout << "\t\t\t*   0) é€€å‡º                                             *\n";
 	cout << "\t\t\t*-------------------------------------------------------*\n";
-	cout << "\t\t\tÇëÊäÈë£º";
+	cout << "\t\t\tè¯·è¾“å…¥ï¼š";
 }
-// ¹ÜÀíÔ±²Ëµ¥
+// ç®¡ç†å‘˜èœå•
 void AdminMenu()
 {
 	cout << endl;
-	cout << "\t\t\t*------------------ÕâÊÇÒ»¸öÆæ¹ÖµÄ²Ëµ¥-------------------*\n";
-	cout << "\t\t\t*   1) ´òÓ¡                                             *\n";
-	cout << "\t\t\t*   2) ĞŞ¸Ä±ß                                           *\n";
-	cout << "\t\t\t*   3) Ìí¼Ó±ß                                           *\n";
-	cout << "\t\t\t*   0) ÍË³ö                                             *\n";
+	cout << "\t\t\t*------------------è¿™æ˜¯ä¸€ä¸ªå¥‡æ€ªçš„èœå•-------------------*\n";
+	cout << "\t\t\t*   1) æ‰“å°                                             *\n";
+	cout << "\t\t\t*   2) ä¿®æ”¹è¾¹                                           *\n";
+	cout << "\t\t\t*   3) æ·»åŠ è¾¹                                           *\n";
+	cout << "\t\t\t*   0) é€€å‡º                                             *\n";
 	cout << "\t\t\t*-------------------------------------------------------*\n";
-	cout << "\t\t\tÇëÊäÈë-^_^-£º";
+	cout << "\t\t\tè¯·è¾“å…¥-^_^-ï¼š";
 }
 
-//void TrafficGraph::Min_Max(GraphInfo GI[])
+// void TrafficGraph::Min_Max(GraphInfo GI[])
 //{
-//	// 0×îĞ¡£»1×î´ó
+//	// 0æœ€å°ï¼›1æœ€å¤§
 //	double dis[2] = { 99999,-1 };
 //	double cost[2] = { 99999,-1 };
 //	double time[2] = { 99999, -1 };
@@ -508,4 +508,4 @@ void AdminMenu()
 //	delete[]_dis;
 //	delete[]_time;
 //	delete[]_cost;
-//}
+// }
